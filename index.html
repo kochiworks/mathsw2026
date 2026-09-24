@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>수학 SoftWare · 2026 수학·과학 축제</title>
+  <meta name="description" content="2026 수학·과학 축제 ‘수학 SoftWare’ 활동 안내 페이지" />
+  <meta name="theme-color" content="#7a4a2a" />
+  <link rel="icon" type="image/png" href="assets/robot-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 장식용 SVG 심볼 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="leaf" viewBox="0 0 100 100">
+        <path d="M50 4 C62 18 80 22 88 40 C74 42 70 50 82 62 C68 64 60 70 60 88 L50 96 L40 88 C40 70 32 64 18 62 C30 50 26 42 12 40 C20 22 38 18 50 4 Z" fill="currentColor"/>
+        <path d="M50 20 L50 96 M50 50 L30 38 M50 50 L70 38 M50 70 L34 60 M50 70 L66 60" stroke="rgba(0,0,0,.18)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="oval-leaf" viewBox="0 0 100 100">
+        <path d="M50 4 C82 26 84 70 50 96 C16 70 18 26 50 4 Z" fill="currentColor"/>
+        <path d="M50 14 L50 94 M50 40 L34 30 M50 40 L66 30 M50 62 L32 50 M50 62 L68 50" stroke="rgba(0,0,0,.16)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="sunflower" viewBox="0 0 100 100">
+        <g fill="#f5b52e" stroke="#e39a1c" stroke-width="1.5">
+          <ellipse cx="50" cy="16" rx="9" ry="17"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(30 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(60 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(90 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(120 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(150 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(180 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(210 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(240 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(270 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(300 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(330 50 50)"/>
+        </g>
+        <circle cx="50" cy="50" r="19" fill="#6b3f22"/>
+        <circle cx="50" cy="50" r="19" fill="url(#seed)"/>
+      </symbol>
+      <pattern id="seed" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="6" height="6" fill="#6b3f22"/>
+        <path d="M0 0 L6 0 M0 0 L0 6" stroke="#4a2a14" stroke-width="1.4"/>
+      </pattern>
+    </defs>
+  </svg>
+
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <img src="assets/robot-icon.png" alt="" width="40" height="40" />
+      <span><small id="brand-festival">2026 수학·과학 축제</small><b>수학 SoftWare</b></span>
+    </a>
+    <button class="menu-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav">☰</button>
+    <nav id="nav" class="nav">
+      <a href="#/" data-route="home">홈</a>
+      <a href="#/intro" data-route="intro">소개</a>
+      <a href="#/activities" data-route="activities">활동 목록</a>
+      <a href="#/guide" data-route="guide">참여 방법</a>
+    </nav>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer class="footer">
+    <div class="bunting small" aria-hidden="true"></div>
+    <p><b id="footer-festival">2026 수학·과학 축제</b> · 수학 SoftWare</p>
+    <p class="muted">활동 정보는 구글 시트에서 실시간으로 불러옵니다.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="js/config.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>
