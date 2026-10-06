@@ -215,6 +215,11 @@
   }
 
   function patternClass(i) { return "pat-" + (i % 5); }
+  function iconImageFor(it) {
+    const icons = CFG.activityIcons || {};
+    const key = Object.keys(icons).find((k) => it.title.includes(k));
+    return key ? icons[key] : "";
+  }
   function emojiFor(it) { return it.icon || EMOJIS[(it.id - 1) % EMOJIS.length]; }
 
   // ---------- 페이지 ----------
@@ -274,7 +279,7 @@
     return list.map((it) => `<a class="card" href="#/activity/${it.id}">
       <div class="thumb ${patternClass(it.id - 1)}">
         <span class="num">${esc(it.num)}</span>
-        ${it.image ? `<img src="${esc(it.image)}" alt="" loading="lazy" onerror="this.remove()" />` : `<span class="emoji">${esc(emojiFor(it))}</span>`}
+        ${it.image ? `<img src="${esc(it.image)}" alt="" loading="lazy" onerror="this.remove()" />` : iconImageFor(it) ? `<img class="icon-img" src="${esc(iconImageFor(it))}" alt="" loading="lazy" />` : `<span class="emoji">${esc(emojiFor(it))}</span>`}
       </div>
       <div class="body">
         <div class="tags">${it.category ? `<span class="tag">${esc(it.category)}</span>` : ""}${it.target ? `<span class="tag" style="background:#fdebd8;color:var(--orange)">${esc(it.target)}</span>` : ""}</div>

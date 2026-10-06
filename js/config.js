@@ -11,6 +11,11 @@ window.MATHSW_CONFIG = {
   title: "수학 SoftWare",
   subtitle: "수학으로 생각하고, 소프트웨어로 놀아요!",
 
+  // 활동 카드 아이콘 이미지 지정 (활동명에 아래 글자가 포함되면 해당 이미지 사용)
+  activityIcons: {
+    "활주로를 찾아라": "assets/icons/runway.png",
+  },
+
   // 안내 캐릭터
   guideName: "수리봇",
 
