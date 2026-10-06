@@ -19,7 +19,8 @@
     link:     ["링크", "url", "주소", "바로가기", "활동 링크", "활동링크", "사이트", "link", "href"],
     image:    ["이미지", "썸네일", "사진", "그림", "image", "img", "thumbnail"],
     category: ["분류", "구분", "카테고리", "영역", "유형", "종류", "주제", "category", "type"],
-    target:   ["대상", "학년", "대상 학년", "난이도", "level", "grade"],
+    target:   ["대상", "학년", "대상 학년", "grade"],
+    level:    ["난이도", "level"],
     icon:     ["아이콘", "이모지", "icon", "emoji"],
     visible:  ["공개", "표시", "사용", "노출", "게시", "visible", "show"],
   };
@@ -102,6 +103,7 @@
         image: isUrl(get("image")) ? imageUrl(get("image")) : "",
         category: get("category"),
         target: get("target"),
+        level: get("level"),
         icon: get("icon"),
         extra,
         extraLinks,
@@ -179,6 +181,19 @@
     return `<div class="state"><div class="loader"><i></i><i></i><i></i></div><p>활동을 불러오는 중…</p></div>`;
   }
 
+  // 난이도 숫자 → ★★☆ (가장 높은 난이도만큼 칸을 만듦, 최소 3칸)
+  function stars(level) {
+    const n = Math.round(parseFloat(level));
+    if (!(n > 0)) return String(level);
+    const max = Math.max(3, ...state.items.map((it) => Math.round(parseFloat(it.level)) || 0));
+    return "★".repeat(Math.min(n, max)) + "☆".repeat(Math.max(0, max - n));
+  }
+  function levelTag(it) {
+    return it.level
+      ? `<span class="tag level" aria-label="난이도 ${esc(it.level)}">난이도 <b>${esc(stars(it.level))}</b></span>`
+      : "";
+  }
+
   function patternClass(i) { return "pat-" + (i % 5); }
   // 아이콘 열에 이미지 경로가 있거나, config.js의 activityIcons에 활동명이 있으면 이미지 아이콘 사용
   const isImagePath = (s) => /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(String(s || "").trim());
@@ -251,7 +266,7 @@
         ${it.image ? `<img src="${esc(it.image)}" alt="" loading="lazy" onerror="this.remove()" />` : iconImageFor(it) ? `<img class="icon-img" src="${esc(iconImageFor(it))}" alt="" loading="lazy" />` : `<span class="emoji">${esc(emojiFor(it))}</span>`}
       </div>
       <div class="body">
-        <div class="tags">${it.category ? `<span class="tag">${esc(it.category)}</span>` : ""}${it.target ? `<span class="tag" style="background:#fdebd8;color:var(--orange)">${esc(it.target)}</span>` : ""}</div>
+        <div class="tags">${it.category ? `<span class="tag">${esc(it.category)}</span>` : ""}${levelTag(it)}${it.target ? `<span class="tag" style="background:#fdebd8;color:var(--orange)">${esc(it.target)}</span>` : ""}</div>
         <h3>${esc(it.title)}</h3>
         ${it.desc ? `<p class="desc">${esc(it.desc)}</p>` : ""}
         <span class="more">자세히 보기 →</span>
@@ -291,6 +306,7 @@
       : `‘${it.title}’ 활동이에요!\n아래 설명을 잘 읽고 도전해 보세요.`);
     const info = [];
     if (it.category) info.push(["분류", it.category]);
+    if (it.level) info.push(["난이도", stars(it.level)]);
     if (it.target) info.push(["대상", it.target]);
     it.extra.forEach((e) => info.push([e.label, e.value]));
     if (it.linkText) info.push(["안내", it.linkText]);
