@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>수학 SoftWare 활동지 표지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* 메인페이지(css/style.css)와 같은 색상·글꼴 */
+    :root {
+      --cream: #fffaf0;
+      --cream-2: #fbf0dc;
+      --brown: #7a4a2a;
+      --orange: #e07b2e;
+      --mustard: #f5b52e;
+      --sage: #8fa66b;
+      --sage-dark: #5f7a44;
+      --plum: #7e4e8c;
+      --red: #c8452f;
+      --ink: #4a2e1c;
+      --font-title: "Montserrat", "Noto Sans KR", sans-serif;
+      --font-body: "Noto Sans KR", system-ui, sans-serif;
+    }
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: #e9e2d4;
+      font-family: var(--font-body); color: var(--ink);
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .sheet {
+      position: relative; overflow: hidden; isolation: isolate;
+      width: 210mm; height: 297mm; margin: 10mm auto;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(245,181,46,.16), transparent 40%),
+        radial-gradient(circle at 90% 100%, rgba(143,166,107,.18), transparent 40%),
+        var(--cream);
+      box-shadow: 0 10px 30px rgba(90,51,25,.18);
+    }
+    @media print {
+      body { background: none; }
+      .sheet { margin: 0; box-shadow: none; }
+    }
+
+    /* 안쪽 카드 (메인페이지 hero 상자) */
+    .card {
+      position: absolute; inset: 12mm; border-radius: 10mm; overflow: hidden; isolation: isolate;
+      background: #fffdf6;
+      box-shadow: 0 2mm 6mm rgba(122,74,42,.12), inset 0 0 0 .6mm var(--cream-2);
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 44mm 12mm 0;
+    }
+
+    /* 만국기 */
+    .bunting {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+      display: flex; justify-content: center; gap: 1.2mm; padding-top: 2.6mm;
+    }
+    .bunting::before {
+      content: ""; position: absolute; left: 0; right: 0; top: 2mm; height: .9mm;
+      background: #a07048; border-radius: 1mm;
+    }
+    .flag {
+      width: 14mm; aspect-ratio: 5 / 6;
+      clip-path: polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%);
+      box-shadow: inset 0 -1mm 0 rgba(0,0,0,.08);
+      transform-origin: top center;
+    }
+    .flag:nth-child(odd) { clip-path: polygon(0 0, 100% 0, 50% 100%); transform: rotate(-3deg); }
+    .flag:nth-child(even) { transform: rotate(3deg); }
+    .flag.dots   { background: radial-gradient(circle, #4f2c5c 30%, transparent 32%) 0 0 / 3.6mm 3.6mm, var(--plum); }
+    .flag.stripe { background: repeating-linear-gradient(135deg, var(--mustard) 0 1.8mm, #ffd67a 1.8mm 3.6mm); }
+    .flag.plaid  { background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.28) 0 .8mm, transparent .8mm 3mm),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 .8mm, transparent .8mm 3mm), var(--orange); }
+    .flag.sage   { background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,.25) 0 .5mm, transparent .5mm 2.3mm),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,.25) 0 .5mm, transparent .5mm 2.3mm), var(--sage); }
+    .flag.red    { background: repeating-linear-gradient(45deg, var(--red) 0 2mm, #d9604a 2mm 4mm); }
+    .flag.spots  { background: radial-gradient(circle, rgba(255,255,255,.35) 22%, transparent 25%) 0 0 / 2.8mm 2.8mm, #a0602f; }
+
+    /* 장식 */
+    .deco { position: absolute; z-index: -1; pointer-events: none; }
+    .deco svg { display: block; width: 100%; height: 100%; }
+
+    /* 제목 영역 */
+    .festival {
+      display: inline-block; font-weight: 900; color: #fff; background: var(--sage-dark);
+      font-size: 6mm; padding: 2mm 7mm; border-radius: 999px; letter-spacing: .02em;
+    }
+    h1 {
+      font-family: var(--font-title); font-weight: 900; color: var(--brown);
+      font-size: 23mm; line-height: 1; margin: 9mm 0 6mm;
+      letter-spacing: -.02em; white-space: nowrap;
+      text-shadow: 0 1.6mm 0 rgba(245,181,46,.35);
+    }
+    h1 span { color: var(--orange); }
+    .lead { font-size: 8mm; color: var(--brown); margin: 0; font-weight: 500; }
+
+    /* 수리봇 */
+    .robot { position: relative; margin-top: 12mm; width: 112mm; height: 108mm; }
+    .robot::before {
+      content: ""; position: absolute; left: 50%; bottom: 2mm; transform: translateX(-50%);
+      width: 82mm; height: 12mm; border-radius: 50%; background: rgba(122,74,42,.10);
+    }
+    .robot img { position: relative; width: 100%; height: 100%; object-fit: contain; }
+
+    /* 하단 이름 칸 */
+    .name {
+      position: absolute; left: 50%; bottom: 26mm; transform: translateX(-50%);
+      display: flex; gap: 3mm; align-items: center;
+      background: #fff; border: .6mm solid var(--cream-2); border-radius: 6mm;
+      padding: 3.5mm 7mm; box-shadow: 0 1.5mm 0 rgba(122,74,42,.10);
+      font-weight: 700; color: var(--brown); font-size: 5mm; white-space: nowrap;
+    }
+    .name i { display: inline-block; width: 12mm; border-bottom: .4mm solid #d9c4a3; height: 5mm; }
+    .name i.wide { width: 34mm; }
+    .foot {
+      position: absolute; left: 0; right: 0; bottom: 12mm;
+      font-size: 4mm; color: #9a7558; font-weight: 700; letter-spacing: .04em;
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="leaf" viewBox="0 0 100 100">
+        <path d="M50 4 C62 18 80 22 88 40 C74 42 70 50 82 62 C68 64 60 70 60 88 L50 96 L40 88 C40 70 32 64 18 62 C30 50 26 42 12 40 C20 22 38 18 50 4 Z" fill="currentColor"/>
+        <path d="M50 20 L50 96 M50 50 L30 38 M50 50 L70 38 M50 70 L34 60 M50 70 L66 60" stroke="rgba(0,0,0,.18)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="oval-leaf" viewBox="0 0 100 100">
+        <path d="M50 4 C82 26 84 70 50 96 C16 70 18 26 50 4 Z" fill="currentColor"/>
+        <path d="M50 14 L50 94 M50 40 L34 30 M50 40 L66 30 M50 62 L32 50 M50 62 L68 50" stroke="rgba(0,0,0,.16)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="sunflower" viewBox="0 0 100 100">
+        <g fill="#f5b52e" stroke="#e39a1c" stroke-width="1.5">
+          <ellipse cx="50" cy="16" rx="9" ry="17"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(30 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(60 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(90 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(120 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(150 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(180 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(210 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(240 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(270 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(300 50 50)"/>
+          <ellipse cx="50" cy="16" rx="9" ry="17" transform="rotate(330 50 50)"/>
+        </g>
+        <circle cx="50" cy="50" r="19" fill="#6b3f22"/>
+        <circle cx="50" cy="50" r="19" fill="url(#seed)"/>
+      </symbol>
+      <pattern id="seed" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="6" height="6" fill="#6b3f22"/>
+        <path d="M0 0 L6 0 M0 0 L0 6" stroke="#4a2a14" stroke-width="1.4"/>
+      </pattern>
+    </defs>
+  </svg>
+
+  <div class="sheet">
+    <div class="card">
+      <div class="bunting" aria-hidden="true">
+        <span class="flag sage"></span><span class="flag dots"></span><span class="flag stripe"></span>
+        <span class="flag plaid"></span><span class="flag spots"></span><span class="flag red"></span>
+        <span class="flag sage"></span><span class="flag dots"></span><span class="flag stripe"></span>
+        <span class="flag plaid"></span><span class="flag spots"></span>
+      </div>
+
+      <!-- 왼쪽 장식 -->
+      <div class="deco" style="left:-18mm;top:118mm;width:52mm;height:52mm;color:var(--sage)"><svg><use href="#oval-leaf"/></svg></div>
+      <div class="deco" style="left:-6mm;top:22mm;width:24mm;height:24mm;color:var(--orange);transform:rotate(-25deg)"><svg><use href="#leaf"/></svg></div>
+      <div class="deco" style="left:-14mm;bottom:-12mm;width:58mm;height:58mm"><svg><use href="#sunflower"/></svg></div>
+      <div class="deco" style="left:24mm;bottom:-18mm;width:32mm;height:32mm;color:var(--orange);transform:rotate(30deg)"><svg><use href="#leaf"/></svg></div>
+      <!-- 오른쪽 장식 -->
+      <div class="deco" style="right:-16mm;top:120mm;width:50mm;height:50mm"><svg><use href="#sunflower"/></svg></div>
+      <div class="deco" style="right:-4mm;top:24mm;width:24mm;height:24mm;color:var(--sage);transform:rotate(35deg)"><svg><use href="#oval-leaf"/></svg></div>
+      <div class="deco" style="right:-10mm;bottom:-10mm;width:52mm;height:52mm;color:var(--mustard);transform:rotate(-30deg)"><svg><use href="#leaf"/></svg></div>
+      <div class="deco" style="right:30mm;bottom:-18mm;width:32mm;height:32mm;color:var(--sage);transform:rotate(20deg)"><svg><use href="#oval-leaf"/></svg></div>
+
+      <span class="festival">2026 수학·과학 축제</span>
+      <h1>수학 <span>SoftWare</span></h1>
+      <p class="lead">수학으로 생각하고, 소프트웨어로 놀아요!</p>
+
+      <div class="robot"><img src="../assets/robot.webp" alt="수리봇" /></div>
+
+      <div class="foot">2026 수학·과학 축제 · 수학 SoftWare</div>
+    </div>
+  </div>
+</body>
+</html>
