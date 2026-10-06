@@ -1,12 +1,9 @@
 /*
  * 사이트 설정 파일
- * - 구글 시트 주소나 안내 문구를 바꾸고 싶으면 이 파일만 수정하면 됩니다.
+ * - 활동 목록(DB)은 js/data.js 에 있습니다.
+ * - 안내 문구나 아이콘 이미지를 바꾸고 싶으면 이 파일을 수정하면 됩니다.
  */
 window.MATHSW_CONFIG = {
-  // 웹에 게시된 구글 시트(CSV) 주소
-  sheetCsvUrl:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWu9LsFwIFIZbata39-0M-ZZT1PlYvndYAmtfrm8XlbSr3xtDzhRgTKlM6HSeOyvRJJagV8JIkHTs2/pub?gid=0&single=true&output=csv",
-
   festival: "2026 수학·과학 축제",
   title: "수학 SoftWare",
   subtitle: "수학으로 생각하고, 소프트웨어로 놀아요!",

@@ -334,8 +334,6 @@ main { min-height: 70vh; outline: none; }
 .loader i:nth-child(2) { background: var(--mustard); animation-delay: .15s; }
 .loader i:nth-child(3) { background: var(--sage); animation-delay: .3s; }
 @keyframes hop { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-.updated { text-align: center; font-size: .85rem; color: var(--muted); margin-top: 26px; }
-.updated button { background: none; border: 0; color: var(--orange); font-weight: 800; cursor: pointer; text-decoration: underline; font-family: inherit; }
 
 /* ===== 푸터 ===== */
 .footer { text-align: center; padding: 10px 16px 30px; color: var(--brown); border-top: 3px dashed rgba(224,123,46,.35); margin-top: 20px; }

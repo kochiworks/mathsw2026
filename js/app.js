@@ -1,6 +1,6 @@
 /* 수학 SoftWare · 2026 수학·과학 축제
- * 게시된 구글 시트(CSV)를 읽어 활동 페이지를 만듭니다.
- * 시트의 첫 줄(머리글) 이름을 보고 각 열의 용도를 자동으로 판단합니다.
+ * js/data.js(엑셀 DB 시트에서 변환)의 활동 목록으로 페이지를 만듭니다.
+ * 항목 이름(엑셀 머리글)을 보고 각 열의 용도를 자동으로 판단합니다.
  */
 (function () {
   "use strict";
@@ -11,7 +11,7 @@
 
   // ---------- 머리글 → 용도 매핑 ----------
   const FIELD_ALIASES = {
-    num:      ["번호", "순번", "no", "no.", "#", "순서", "id"],
+    num:      ["연번", "번호", "순번", "no", "no.", "#", "순서", "id"],
     title:    ["활동명", "활동 이름", "활동이름", "활동", "제목", "프로그램", "프로그램명", "콘텐츠", "이름", "부스명", "title", "name"],
     desc:     ["설명", "활동 설명", "활동설명", "내용", "소개", "활동 내용", "활동내용", "개요", "description", "desc"],
     how:      ["방법", "활동 방법", "활동방법", "진행 방법", "진행방법", "참여 방법", "참여방법", "사용법", "how"],
@@ -31,28 +31,6 @@
   const esc = (s) => String(s == null ? "" : s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-
-  // ---------- CSV 파서 (따옴표·줄바꿈 지원) ----------
-  function parseCSV(text) {
-    const rows = [];
-    let row = [], cell = "", q = false;
-    text = text.replace(/^﻿/, "");
-    for (let i = 0; i < text.length; i++) {
-      const c = text[i];
-      if (q) {
-        if (c === '"') {
-          if (text[i + 1] === '"') { cell += '"'; i++; } else q = false;
-        } else cell += c;
-      } else if (c === '"') q = true;
-      else if (c === ",") { row.push(cell); cell = ""; }
-      else if (c === "\n" || c === "\r") {
-        if (c === "\r" && text[i + 1] === "\n") i++;
-        row.push(cell); rows.push(row); row = []; cell = "";
-      } else cell += c;
-    }
-    if (cell !== "" || row.length) { row.push(cell); rows.push(row); }
-    return rows.filter((r) => r.some((v) => v.trim() !== ""));
-  }
 
   // 구글 드라이브 공유 링크를 이미지 주소로 변환
   function imageUrl(u) {
@@ -140,30 +118,24 @@
   }
 
   // ---------- 데이터 로딩 ----------
-  const state = { status: "idle", items: [], error: "", loadedAt: null, filter: "전체", query: "" };
-  let loading = null;
+  const state = { status: "loading", items: [], error: "", filter: "전체", query: "" };
 
-  function loadSheet(force) {
-    if (loading && !force) return loading;
-    state.status = "loading";
-    loading = fetch(CFG.sheetCsvUrl, { cache: "no-store" })
-      .then((res) => {
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        return res.text();
-      })
-      .then((text) => {
-        if (/^\s*<(!doctype|html)/i.test(text)) throw new Error("CSV가 아닌 응답을 받았어요. 시트가 ‘웹에 게시(CSV)’되어 있는지 확인해 주세요.");
-        const data = buildActivities(parseCSV(text));
-        state.items = data.items;
-        state.status = "ready";
-        state.loadedAt = new Date();
-      })
-      .catch((err) => {
-        state.status = "error";
-        state.error = err.message || String(err);
-      })
-      .finally(() => route());
-    return loading;
+  // [{머리글: 값, ...}, ...] → [[머리글...], [값...], ...]
+  function objectsToRows(list) {
+    const headers = [];
+    list.forEach((o) => Object.keys(o).forEach((k) => { if (!headers.includes(k)) headers.push(k); }));
+    return [headers, ...list.map((o) => headers.map((h) => (o[h] == null ? "" : String(o[h]))))];
+  }
+
+  function loadData() {
+    const data = window.MATHSW_DATA;
+    if (!Array.isArray(data)) {
+      state.status = "error";
+      state.error = "js/data.js 파일을 찾을 수 없어요.";
+      return;
+    }
+    state.items = buildActivities(objectsToRows(data)).items;
+    state.status = "ready";
   }
 
   // ---------- 공통 조각 ----------
@@ -201,26 +173,23 @@
 
   function statusBlock() {
     if (state.status === "error") {
-      return `${guide("앗! 활동 정보를 불러오지 못했어요.\n인터넷 연결을 확인하고 다시 시도해 볼까요?")}
-        <div class="state"><p>오류: ${esc(state.error)}</p>
-        <button class="btn" data-action="reload">다시 불러오기</button></div>`;
+      return `${guide("앗! 활동 정보를 불러오지 못했어요.\n잠시 후 페이지를 새로고침해 볼까요?")}
+        <div class="state"><p>오류: ${esc(state.error)}</p></div>`;
     }
-    return `<div class="state"><div class="loader"><i></i><i></i><i></i></div><p>구글 시트에서 활동을 불러오는 중…</p></div>`;
-  }
-
-  function updatedLine() {
-    if (!state.loadedAt) return "";
-    const t = state.loadedAt.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
-    return `<p class="updated">${t} 기준 정보 · <button data-action="reload">새로고침</button></p>`;
+    return `<div class="state"><div class="loader"><i></i><i></i><i></i></div><p>활동을 불러오는 중…</p></div>`;
   }
 
   function patternClass(i) { return "pat-" + (i % 5); }
+  // 아이콘 열에 이미지 경로가 있거나, config.js의 activityIcons에 활동명이 있으면 이미지 아이콘 사용
+  const isImagePath = (s) => /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(String(s || "").trim());
+  const squash = (s) => String(s || "").replace(/\s+/g, "");
   function iconImageFor(it) {
+    if (isImagePath(it.icon)) return it.icon;
     const icons = CFG.activityIcons || {};
-    const key = Object.keys(icons).find((k) => it.title.includes(k));
+    const key = Object.keys(icons).find((k) => squash(it.title).includes(squash(k)));
     return key ? icons[key] : "";
   }
-  function emojiFor(it) { return it.icon || EMOJIS[(it.id - 1) % EMOJIS.length]; }
+  function emojiFor(it) { return (!isImagePath(it.icon) && it.icon) || EMOJIS[(it.id - 1) % EMOJIS.length]; }
 
   // ---------- 페이지 ----------
   function pageHome() {
@@ -300,7 +269,7 @@
           <label class="search">🔍<input type="search" id="q" placeholder="활동 이름으로 찾기" value="${esc(state.query)}" aria-label="활동 검색" /></label>
           ${cats.length > 2 ? `<div class="chips">${cats.map((c) => `<button class="chip ${c === state.filter ? "active" : ""}" data-filter="${esc(c)}">${esc(c)}</button>`).join("")}</div>` : ""}
         </div>
-        <div class="grid" id="grid">${cardsHtml(filtered())}</div>${updatedLine()}`;
+        <div class="grid" id="grid">${cardsHtml(filtered())}</div>`;
     }
     const n = state.status === "ready" ? state.items.length : 0;
     return `<section class="page">
@@ -412,7 +381,6 @@
       app.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c === f));
       document.getElementById("grid").innerHTML = cardsHtml(filtered());
     }
-    if (e.target.closest('[data-action="reload"]')) loadSheet(true);
   });
 
   const menuBtn = document.querySelector(".menu-btn");
@@ -436,6 +404,6 @@
   document.getElementById("footer-festival").textContent = CFG.festival || "";
   document.querySelector(".footer .bunting").innerHTML = bunting(10).replace(/^<div[^>]*>|<\/div>$/g, "");
 
+  loadData();
   route();
-  loadSheet();
 })();
