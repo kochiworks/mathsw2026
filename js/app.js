@@ -1,6 +1,6 @@
 /* 수학 SoftWare · 2026 수학·과학 축제
- * js/data.js(엑셀 DB 시트에서 변환)의 활동 목록으로 페이지를 만듭니다.
- * 항목 이름(엑셀 머리글)을 보고 각 열의 용도를 자동으로 판단합니다.
+ * 저장소의 엑셀 DB 파일(data/mathsw_db.xlsx)의 DB 시트를 직접 읽어 페이지를 만듭니다.
+ * 엑셀 첫 줄(머리글) 이름을 보고 각 열의 용도를 자동으로 판단합니다.
  */
 (function () {
   "use strict";
@@ -122,22 +122,24 @@
   // ---------- 데이터 로딩 ----------
   const state = { status: "loading", items: [], error: "", filter: "전체", query: "" };
 
-  // [{머리글: 값, ...}, ...] → [[머리글...], [값...], ...]
-  function objectsToRows(list) {
-    const headers = [];
-    list.forEach((o) => Object.keys(o).forEach((k) => { if (!headers.includes(k)) headers.push(k); }));
-    return [headers, ...list.map((o) => headers.map((h) => (o[h] == null ? "" : String(o[h]))))];
-  }
-
+  // 엑셀 파일은 매번 새로 확인해서, 저장소의 파일을 고치면 바로 반영되게 함
   function loadData() {
-    const data = window.MATHSW_DATA;
-    if (!Array.isArray(data)) {
-      state.status = "error";
-      state.error = "js/data.js 파일을 찾을 수 없어요.";
-      return;
-    }
-    state.items = buildActivities(objectsToRows(data)).items;
-    state.status = "ready";
+    const file = CFG.dataFile || "data/mathsw_db.xlsx";
+    return fetch(file, { cache: "no-cache" })
+      .then((res) => {
+        if (!res.ok) throw new Error(`${file} 파일을 찾을 수 없어요. (HTTP ${res.status})`);
+        return res.arrayBuffer();
+      })
+      .then((buf) => window.readXlsxSheet(buf, CFG.sheetName || "DB"))
+      .then((rows) => {
+        state.items = buildActivities(rows).items;
+        state.status = "ready";
+      })
+      .catch((err) => {
+        state.status = "error";
+        state.error = err.message || String(err);
+      })
+      .finally(route);
   }
 
   // ---------- 공통 조각 ----------
@@ -420,6 +422,6 @@
   document.getElementById("footer-festival").textContent = CFG.festival || "";
   document.querySelector(".footer .bunting").innerHTML = bunting(10).replace(/^<div[^>]*>|<\/div>$/g, "");
 
-  loadData();
   route();
+  loadData();
 })();

@@ -1,9 +1,13 @@
 /*
  * 사이트 설정 파일
- * - 활동 목록(DB)은 js/data.js 에 있습니다.
+ * - 활동 목록(DB)은 엑셀 파일 data/mathsw_db.xlsx 의 DB 시트에서 읽어 옵니다.
  * - 안내 문구나 아이콘 이미지를 바꾸고 싶으면 이 파일을 수정하면 됩니다.
  */
 window.MATHSW_CONFIG = {
+  // 활동 DB 엑셀 파일과 시트 이름
+  dataFile: "data/mathsw_db.xlsx",
+  sheetName: "DB",
+
   festival: "2026 수학·과학 축제",
   title: "수학 SoftWare",
   subtitle: "수학으로 생각하고, 소프트웨어로 놀아요!",

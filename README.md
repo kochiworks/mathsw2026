@@ -1,7 +1,7 @@
 # 수학 SoftWare · 2026 수학·과학 축제
 
 2026 수학·과학 축제 **‘수학 SoftWare’** 활동 안내 웹페이지입니다.
-안내 캐릭터 **수리봇**이 각 페이지에서 활동을 소개하며, 활동 목록은 엑셀 DB 파일의 `DB` 시트를 변환한 **`js/data.js`** 에서 읽어 옵니다.
+안내 캐릭터 **수리봇**이 각 페이지에서 활동을 소개하며, 활동 목록은 저장소의 엑셀 DB 파일 **`data/mathsw_db.xlsx`** 의 `DB` 시트를 직접 읽어 옵니다.
 
 ## 페이지 구성
 | 주소 | 내용 |
@@ -13,15 +13,14 @@
 | `#/guide` | 참여 방법 |
 
 ## 활동 목록(DB) 수정 방법
-### 방법 1 — 엑셀에서 고친 뒤 변환 (추천)
-1. 엑셀 파일의 `DB` 시트를 수정합니다.
-2. `python tools/xlsx_to_data.py "엑셀파일.xlsx"` 를 실행하면 `js/data.js` 가 새로 만들어집니다. (`pip install openpyxl` 필요)
-3. `index.html` 아래쪽의 `?v=` 숫자를 바꾼 뒤 GitHub에 올립니다.
+엑셀 파일만 바꾸면 됩니다. 코드는 고칠 필요가 없습니다.
 
-> 엑셀 파일 자체는 저장소에 올리지 않습니다. 공개 저장소이므로 `참가자 정보` 시트의 개인정보가 노출될 수 있기 때문입니다. 변환 스크립트도 `DB` 시트만 읽습니다.
+1. 내 컴퓨터에서 `mathsw_db.xlsx` 의 `DB` 시트를 수정합니다. (활동 추가·삭제, 링크 변경 등)
+2. GitHub 저장소의 **`data`** 폴더 → **Add file → Upload files** 로 같은 이름(`mathsw_db.xlsx`)의 파일을 올리고 **Commit changes** 를 누릅니다.
+3. 1~2분 뒤 사이트를 새로고침하면 반영됩니다.
 
-### 방법 2 — `js/data.js` 직접 수정
-GitHub 웹에서 `js/data.js` 를 열어 항목을 추가·수정해도 됩니다.
+> 파일 이름은 반드시 `mathsw_db.xlsx`, 시트 이름은 `DB` 를 유지해 주세요. (바꾸려면 `js/config.js` 의 `dataFile`, `sheetName` 수정)
+> 저장소가 공개되어 있으므로 엑셀 파일에 학생 개인정보를 넣지 마세요.
 
 ### 인식하는 머리글
 | 머리글 예시 | 용도 |
@@ -53,8 +52,8 @@ GitHub 웹에서 `js/data.js` 를 열어 항목을 추가·수정해도 됩니�
 index.html        페이지 뼈대
 css/style.css     가을 축제 테마 스타일
 js/config.js      사이트 설정 (문구, 아이콘 등)
-js/data.js        활동 목록 DB (엑셀에서 변환)
+js/xlsx-reader.js 엑셀 파일 읽기
 js/app.js         화면 구성
-tools/            엑셀 → data.js 변환 스크립트
+data/mathsw_db.xlsx  활동 DB 엑셀 (이 파일을 고치면 사이트에 반영)
 assets/           수리봇 캐릭터 이미지
 ```
